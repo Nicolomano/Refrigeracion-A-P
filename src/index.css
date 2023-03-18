@@ -1,0 +1,14 @@
+
+.item-list{
+        display: flex;
+    }
+    
+.carrito{
+    background-color: #fff;
+}
+ #body{
+    background-image: url("https://us.123rf.com/450wm/karpenyuk/karpenyuk1510/karpenyuk151000469/46505915-copos-de-nieve-azules-sobre-fondo-blanco-patr%C3%B3n-transparente.jpg");
+    background-repeat: repeat;
+    background-color: white;
+    background-attachment: fixed;
+}

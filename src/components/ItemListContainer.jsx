@@ -1,12 +1,28 @@
 import ItemList from "./ItemList";
-import products from "../data.json";
 import { useParams } from "react-router-dom";
 import { Center, Heading } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import { collection, getDocs, getFirestore, query, where } from "firebase/firestore";
+import Loading from "./Loading";
+
+
 
 const ItemListContainer = () => {
-  const { category } = useParams();
+  const[prods, setProd] = useState([])
+  const[loading, setLoading] = useState(true)
+  const { category, id } = useParams();
+  
+ useEffect(()=>{
+  const db = getFirestore();
+  const prodsCollection = collection(db, "productos");
+  const filter = category ? query(prodsCollection, where("category", "==", category)) : prodsCollection
+  getDocs(filter).then((elements)=>{
+    setProd(elements.docs.map((element)=>({id: element.id, ...element.data()
+    })));  
+    setLoading(false)
+  })
+ },[category])
 
-  const catFilter = products.filter((prod) => prod.category === category)
   return (
     <div>
       <Center>
@@ -14,7 +30,8 @@ const ItemListContainer = () => {
           Catalogo de productos
         </Heading>
       </Center>
-      {category ? <ItemList products={catFilter} /> : <ItemList products={products}/>}
+      {loading ? <Loading/> : <ItemList prods={prods}/>}
+      
     </div>
 
   );
